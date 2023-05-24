@@ -17,7 +17,7 @@ print("============================")
 resposta_principal = input("Insira aqui o número...")
 
 if resposta_principal == "1":
-    resposta_nome = input("Escreva aqui o nome do cliente...")
+    resposta_nome = input("Escreva aqui o nome e sobrenome do cliente...")
     resposta_idade = input("Escreva aqui a idade do cliente...")
     resposta_email = input("Escreva aqui o email do cliente...")
     
@@ -38,10 +38,45 @@ if resposta_principal == "2":
 
     if resposta_1 == "1":
         nome_cliente_antigo = input("Escreva o nome registrado que deseja mudar...")
-        nome_cliente_novo = input("Escreva aqui o novo nome que deseja colocar no cliente...")
+        nome_cliente_novo = input("Escreva aqui o novo nome que deseja substituir...")
 
         cursor.execute("UPDATE clientes SET nome = ('"+nome_cliente_novo+"') WHERE nome = ('"+nome_cliente_antigo+"')")
         banco.commit()
         print("Os dados foram alterados com sucesso!!!")
+        banco.close()
 
-    #if resposta_1 == "2":
+    if resposta_1 == "2":
+        idade_antiga = input("Escreva a idade registrado que deseja mudar...")
+        idade_nova = input("Escreva aqui a nova idade que deseja substituir...")
+
+        cursor.execute("UPDATE clientes SET idade = ('"+idade_nova+"') WHERE idade = ('"+idade_antiga+"')")
+        banco.commit()
+        print("Os dados foram alterados com sucesso!!!")
+        banco.close()
+
+    if resposta_1 == "3":
+        email_antigo = input("Escreva o email registrado que deseja mudar...")
+        email_novo = input("Escreva aqui o novo email que deseja substituir...")
+
+        cursor.execute("UPDATE clientes SET email = ('"+email_novo+"') WHERE email = ('"+email_antigo+"')")
+        banco.commit()
+        print("Os dados foram alterados com sucesso!!!")
+        banco.close()
+    else:
+        print("Número INVÁLIDO")
+
+
+if resposta_principal == "3":
+    resposta_rem = input("Insira o nome completo do cliente que deseja remover...")
+
+    try:
+        cursor = banco.cursor()
+
+        cursor.execute("DELETE FROM clientes WHERE nome = ('"+resposta_rem+"')")
+
+        banco.commit()  
+        banco.close()
+        print("Os dados foram deletados com sucesso!!!")
+
+    except sqlite3.Error as erro:
+        print("Erro ao excluir o arquivo: ", erro)
