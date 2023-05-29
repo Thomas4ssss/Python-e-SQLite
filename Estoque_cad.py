@@ -4,7 +4,7 @@ import sqlite3
 
 banco = sqlite3.connect('banco_cadastro.db')
 cursor = banco.cursor()
-#cursor.execute("CREATE TABLE estoque (Produto text, quantidade integer)")
+#cursor.execute("CREATE TABLE estoque (Produto text, Quantidade integer, Preço int)")
 
 #=========================================================
 
@@ -26,9 +26,10 @@ while contador < 10:
         print("Se deseja recomeçar digite 0 onde quiser.")
         print("==========================================")
         try:
-            nome_prod = str(input("Escreva aqui o produto para adicionar..."))
-            num_de_prod = input("Escreva aqui a quantidade deste produto...")
-            if nome_prod == 0:
+            nome_prod = str(input("Escreva aqui o produto para adicionar...\n"))
+            num_de_prod = input("Escreva aqui a quantidade deste produto...\n")
+            prec_prod = input ("Digite o valor unitário do produto (no lugar onde haverá vírgula coloque ponto)...\n")
+            if nome_prod == "0":
                 print("Recomençando o sistema.")
                 break
             else:
@@ -36,7 +37,7 @@ while contador < 10:
                     break
                 else:
                     nome_prod = nome_prod.upper()
-                    cursor.execute("INSERT INTO estoque VALUES ('"+nome_prod+"', "+str(num_de_prod)+")")
+                    cursor.execute("INSERT INTO estoque VALUES ('"+nome_prod+"', "+str(num_de_prod)+", "+str(prec_prod)+")")
                     banco.commit()
                     print("Os dados foram adicinados com sucesso!!!")
         except Exception as erro:
@@ -74,7 +75,7 @@ while contador < 10:
 
     if resposta == 4:
         print("==========================================")
-        print("SE DESEJA MUDAR O NOME------------DIGITE 1\nSE DESEJA MUDAR A QUANTIDADE------DIGITE 2")
+        print("SE DESEJA MUDAR O NOME------------DIGITE 1\nSE DESEJA MUDAR A QUANTIDADE------DIGITE 2\nSE DESEJA MUDAR O PREÇO-----------DIGITE 3")
         print("==========================================")
         print("Se deseja recomeçar digite 0.")
         print("==========================================")
@@ -119,9 +120,33 @@ while contador < 10:
                     else:
                         try:
                             qnt_prod_antigo = qnt_prod_antigo.upper()
-                            cursor.execute("UPDATE estoque SET quantidade = ('"+qnt_prod_novo+"') WHERE Produto = ('"+qnt_prod_antigo+"')")
+                            cursor.execute("UPDATE estoque SET Quantidade = ('"+qnt_prod_novo+"') WHERE Produto = ('"+qnt_prod_antigo+"')")
                             banco.commit()
                             print("Os dados foram alterados com sucesso!!!")
                         except Exception as erro:
                             print("Credenciais inválidas!")
                             print(erro)
+            if resposta_att == 3:
+                print("==========================================")
+                print("Se deseja recomeçar digite 0 em qualquer aba.")
+                print("==========================================")
+                prec_prod_antigo = input("Escreva o nome registrado do produto para mudar a quantidade...\n")
+                if prec_prod_antigo == 0:
+                    break
+                else:
+                    prec_prod_novo = input("Escreva aqui a nova preçagem para o produto citado...\n")
+                    if prec_prod_novo == 0:
+                        break
+                    else:
+                        try:
+                            prec_prod_antigo = prec_prod_antigo.upper()
+                            cursor.execute("UPDATE estoque SET Preço = ('"+prec_prod_novo+"') WHERE Produto = ('"+prec_prod_antigo+"')")
+                            banco.commit()
+                            print("Os dados foram alterados com sucesso!!!")
+                        except Exception as erro:
+                            print("Credenciais inválidas!")
+                            print(erro)
+
+            else:
+                print("Número Inválido!")
+    
